@@ -3,7 +3,7 @@ import InstructionsComponent from "./InstructionsComponent";
 import GameBoardComponent from "./GameBoardComponent";
 import GameStatusComponent from "./GameStatusComponent";
 
-export default function GamePage(){
+export default function GamePage() {
     const [board, setBoard] = useState(() =>
         Array(6).fill(null).map(() => Array(7).fill(0))
     );
@@ -78,30 +78,41 @@ export default function GamePage(){
         setWinner(null);
     };
 
-    return(
-        <div className="min-h-screen bg-blue-100 flex flex-col items-center pt-10 overflow-hidden">
-            <h1 className="text-4xl font-bold mb-10 text-gray-800">Connect Four hello</h1>
+    return (
+        <div className="min-h-screen flex flex-col items-center pt-10 overflow-hidden bg-gradient-to-br from-black via-blue-900 to-black relative">
+            <div className="absolute inset-0 backdrop-blur-md bg-black/30 z-0"></div>
 
-            <div className="flex flex-row w-full max-w-7xl gap-6 px-4">
-                <div className="w-1/4 min-w-[200px] bg-red-500">
-                    <InstructionsComponent />
-                </div>
+            <div className="relative z-10 w-full flex flex-col items-center">
+                <h1
+                    className="text-6xl mb-10 text-white drop-shadow-[0_3px_5px_rgba(0,0,0,0.5)]"
+                    style={{ fontFamily: "'Luckiest Guy', cursive", letterSpacing: "0.2rem" }}
+                >
+                    🎯 Connect Four 🎲
+                </h1>
 
-                <div className="w-1/2 flex justify-center">
-                    <GameBoardComponent 
-                        board={board} 
-                        dropToken={dropToken}
-                    />
-                </div>
 
-                <div className="w-1/4 min-w-[200px]">
-                    <GameStatusComponent
-                        currentPlayer={currentPlayer}
-                        winner={winner}
-                        resetGame={resetGame}
-                    />
+                <div className="flex flex-row w-full max-w-7xl gap-6 px-4">
+                    <div className="w-1/4 min-w-[200px]">
+                        <InstructionsComponent />
+                    </div>
+
+                    <div className="w-1/2 flex justify-center">
+                        <GameBoardComponent
+                            board={board}
+                            dropToken={dropToken}
+                        />
+                    </div>
+
+                    <div className="w-1/4 min-w-[200px]">
+                        <GameStatusComponent
+                            currentPlayer={currentPlayer}
+                            winner={winner}
+                            resetGame={resetGame}
+                        />
+                    </div>
                 </div>
             </div>
         </div>
+
     );
 }

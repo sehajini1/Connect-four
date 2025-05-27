@@ -2,7 +2,7 @@ import React from "react";
 
 export default function GameBoardComponent({ board, dropToken }) {
     return (
-        <div className="p-4 rounded-lg shadow-lg">
+        <div className="p-6 rounded-2xl shadow-xl bg-white/30 backdrop-blur-md border border-white/30">
             {board.map((row, rowIndex) => (
                 <div key={rowIndex} className="flex gap-2 mb-2">
                     {row.map((cell, colIndex) => (
