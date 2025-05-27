@@ -83,7 +83,13 @@ export default function GamePage() {
             <div className="absolute inset-0 backdrop-blur-md bg-black/30 z-0"></div>
 
             <div className="relative z-10 w-full flex flex-col items-center">
-                <h1 className="text-4xl font-bold mb-10 text-white drop-shadow-lg">Connect Four</h1>
+                <h1
+                    className="text-6xl mb-10 text-white drop-shadow-[0_3px_5px_rgba(0,0,0,0.5)]"
+                    style={{ fontFamily: "'Luckiest Guy', cursive", letterSpacing: "0.2rem" }}
+                >
+                    🎯 Connect Four 🎲
+                </h1>
+
 
                 <div className="flex flex-row w-full max-w-7xl gap-6 px-4">
                     <div className="w-1/4 min-w-[200px]">
