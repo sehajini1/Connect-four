@@ -94,8 +94,11 @@ export default function GamePage(){
                     />
                 </div>
 
-                <div className="w-1/4 min-w-[200px] bg-green-500">
+                <div className="w-1/4 min-w-[200px]">
                     <GameStatusComponent
+                        currentPlayer={currentPlayer}
+                        winner={winner}
+                        resetGame={resetGame}
                     />
                 </div>
             </div>
