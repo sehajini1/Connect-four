@@ -21,7 +21,7 @@ export default function GameStatusComponent({ currentPlayer, winner, resetGame }
                 key={player}
                 className={`w-14 h-14 rounded-md flex items-center justify-center ${
                   currentPlayer === player
-                    ? "border-4 border-gray-700"
+                    ? "border-3 border-gray-700"
                     : "none"
                 }`}
               >
