@@ -1,9 +1,10 @@
+import GamePage from "./components/GamePage";
 
 function App() {
 
   return (
     <>
-      hello
+      <GamePage/>
     </>
   )
 }
