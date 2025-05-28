@@ -1,6 +1,9 @@
 import React from "react";
 
-export default function GameBoardComponent({ board, dropToken }) {
+export default function GameBoardComponent({ board, dropToken,winningPositions }) {
+    const isWinningCell = (row, col) =>
+        winningPositions?.some(([r, c]) => r === row && c === col);
+
     return (
         <div className="p-6 rounded-2xl shadow-xl bg-white/30 backdrop-blur-md border border-white/30">
             {board.map((row, rowIndex) => (
@@ -19,6 +22,9 @@ export default function GameBoardComponent({ board, dropToken }) {
                                     className={`
                     w-10 h-10 rounded-full
                     ${cell === 1 ? "bg-red-500" : "bg-yellow-400"}
+                    ${isWinningCell(rowIndex, colIndex)
+                                            ? "ring-4 ring-white animate-pulse"
+                                            : ""}
                   `}
                                 />
                             )}

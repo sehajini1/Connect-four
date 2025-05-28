@@ -10,6 +10,8 @@ export default function GamePage() {
     const [currentPlayer, setCurrentPlayer] = useState(1);
     const [gameOver, setGameOver] = useState(false);
     const [winner, setWinner] = useState(null);
+    const [winningPositions, setWinningPositions] = useState([]);
+
 
     const dropToken = (col) => {
         if (gameOver) return;
@@ -30,12 +32,20 @@ export default function GamePage() {
 
         setBoard(newBoard);
 
-        if (checkWin(newBoard, row, col, currentPlayer)) {
-            setWinner(currentPlayer);
-            setGameOver(true);
-        } else {
-            setCurrentPlayer(currentPlayer === 1 ? 2 : 1);
-        }
+        // if (checkWin(newBoard, row, col, currentPlayer)) {
+        //     setWinner(currentPlayer);
+        //     setGameOver(true);
+        // } else {
+        //     setCurrentPlayer(currentPlayer === 1 ? 2 : 1);
+        // }
+        const result = checkWin(newBoard, row, col, currentPlayer);
+    if (result) {
+        setWinner(currentPlayer);
+        setWinningPositions(result); 
+        setGameOver(true);
+    } else {
+        setCurrentPlayer(currentPlayer === 1 ? 2 : 1);
+    }
     };
 
     const checkWin = (board, row, col, player) => {
@@ -47,12 +57,14 @@ export default function GamePage() {
         ];
 
         for (let [dx, dy] of directions) {
-            let count = 1;
+            //let count = 1;
+            let positions = [[row, col]];
 
             let r = row + dx;
             let c = col + dy;
             while (r >= 0 && r < 6 && c >= 0 && c < 7 && board[r][c] === player) {
-                count++;
+                //count++;
+                positions.push([r, c]);
                 r += dx;
                 c += dy;
             }
@@ -60,12 +72,16 @@ export default function GamePage() {
             r = row - dx;
             c = col - dy;
             while (r >= 0 && r < 6 && c >= 0 && c < 7 && board[r][c] === player) {
-                count++;
+                //count++;
+                positions.push([r, c]);
                 r -= dx;
                 c -= dy;
             }
 
-            if (count >= 4) return true;
+            //if (count >= 4) return true;
+            if (positions.length >= 4) {
+            return positions;
+        }
         }
 
         return false;
@@ -76,6 +92,7 @@ export default function GamePage() {
         setCurrentPlayer(1);
         setGameOver(false);
         setWinner(null);
+        setWinningPositions([]);
     };
 
     return (
@@ -100,6 +117,7 @@ export default function GamePage() {
                         <GameBoardComponent
                             board={board}
                             dropToken={dropToken}
+                            winningPositions={winningPositions}
                         />
                     </div>
 
