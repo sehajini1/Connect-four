@@ -7,135 +7,136 @@ import { useMedia } from "react-use";
 import { useWindowSize } from "react-use";
 
 export default function GamePage() {
-  const [board, setBoard] = useState(() =>
-    Array(6).fill(null).map(() => Array(7).fill(0))
-  );
-  const [currentPlayer, setCurrentPlayer] = useState(1);
-  const [gameOver, setGameOver] = useState(false);
-  const [winner, setWinner] = useState(null);
-  const [winningPositions, setWinningPositions] = useState([]);
-
-  const isSmallMobile = useMedia("(max-width: 400px)");
-  const isTab = useMedia('(max-width: 950px)');
-  const { width, height } = useWindowSize(); 
-
-  const headingSize = isSmallMobile
-    ? 'text-2xl'
-    : isTab
-      ? 'text-4xl'
-      : 'text-6xl';
-
-  const dropToken = (col) => {
-    if (gameOver) return;
-
-    let row = -1;
-    for (let i = 5; i >= 0; i--) {
-      if (board[i][col] === 0) {
-        row = i;
-        break;
-      }
-    }
-
-    if (row === -1) return;
-
-    const newBoard = board.map((r, i) =>
-      r.map((cell, j) => (i === row && j === col ? currentPlayer : cell))
+    const [board, setBoard] = useState(() =>
+        Array(6).fill(null).map(() => Array(7).fill(0))
     );
+    const [currentPlayer, setCurrentPlayer] = useState(1);
+    const [gameOver, setGameOver] = useState(false);
+    const [winner, setWinner] = useState(null);
+    const [winningPositions, setWinningPositions] = useState([]);
 
-    setBoard(newBoard);
+    const isSmallMobile = useMedia("(max-width: 400px)");
+    const isTab = useMedia('(max-width: 950px)');
+    const { width, height } = useWindowSize();
 
-    const result = checkWin(newBoard, row, col, currentPlayer);
-    if (result) {
-      setWinner(currentPlayer);
-      setWinningPositions(result);
-      setGameOver(true);
-    } else {
-      setCurrentPlayer(currentPlayer === 1 ? 2 : 1);
-    }
-  };
+    const headingSize = isSmallMobile
+        ? 'text-2xl'
+        : isTab
+            ? 'text-4xl'
+            : 'text-6xl';
 
-  const checkWin = (board, row, col, player) => {
-    const directions = [
-      [0, 1],
-      [1, 0],
-      [1, 1],
-      [1, -1],
-    ];
+    const dropToken = (col) => {
+        if (gameOver) return;
 
-    for (let [dx, dy] of directions) {
-      let positions = [[row, col]];
+        let row = -1;
+        for (let i = 5; i >= 0; i--) {
+            if (board[i][col] === 0) {
+                row = i;
+                break;
+            }
+        }
 
-      let r = row + dx;
-      let c = col + dy;
-      while (r >= 0 && r < 6 && c >= 0 && c < 7 && board[r][c] === player) {
-        positions.push([r, c]);
-        r += dx;
-        c += dy;
-      }
+        if (row === -1) return;
 
-      r = row - dx;
-      c = col - dy;
-      while (r >= 0 && r < 6 && c >= 0 && c < 7 && board[r][c] === player) {
-        positions.push([r, c]);
-        r -= dx;
-        c -= dy;
-      }
+        const newBoard = [...board];
+        newBoard[row] = [...newBoard[row]];
+        newBoard[row][col] = currentPlayer;
+        setBoard(newBoard);
 
-      if (positions.length >= 4) {
-        return positions;
-      }
-    }
 
-    return false;
-  };
+        const result = checkWin(newBoard, row, col, currentPlayer);
+        if (result) {
+            setWinner(currentPlayer);
+            setWinningPositions(result);
+            setGameOver(true);
+        } else {
+            setCurrentPlayer(currentPlayer === 1 ? 2 : 1);
+        }
+    };
 
-  const resetGame = () => {
-    setBoard(Array(6).fill(null).map(() => Array(7).fill(0)));
-    setCurrentPlayer(1);
-    setGameOver(false);
-    setWinner(null);
-    setWinningPositions([]);
-  };
+    const checkWin = (board, row, col, player) => {
+        const directions = [
+            [0, 1],   // →
+            [1, 0],   // ↓ 
+            [1, 1],   // ↘
+            [1, -1],  // ↙
+        ];
 
-  return (
-    <div className="min-h-screen flex flex-col items-center pt-10 overflow-hidden bg-gradient-to-br from-black via-blue-900 to-black relative">
-      
-      {gameOver && winner && <Confetti width={width} height={height} numberOfPieces={400} />}
 
-      <div className="absolute inset-0 backdrop-blur-md bg-black/30 z-0"></div>
+        for (let [dx, dy] of directions) {
+            let positions = [[row, col]];
 
-      <div className="relative z-10 w-full flex flex-col items-center">
-        <h1
-          className={`${headingSize} mb-10 text-white text-center drop-shadow-[0_3px_5px_rgba(0,0,0,0.5)]`}
-          style={{ fontFamily: "'Luckiest Guy', cursive", letterSpacing: "0.2rem" }}
-        >
-          🎯 Connect Four 🎲
-        </h1>
+            let r = row + dx;
+            let c = col + dy;
+            while (r >= 0 && r < 6 && c >= 0 && c < 7 && board[r][c] === player && positions.length < 4) {
+                positions.push([r, c]);
+                r += dx;
+                c += dy;
+            }
 
-        <div
-          className={`w-full max-w-7xl gap-6 px-4 flex ${isTab ? 'flex-col items-center' : 'flex-row'}`}
-        >
-          <div className={`${isTab ? 'w-full' : 'w-1/4'} min-w-[200px]`}>
-            <InstructionsComponent />
-          </div>
+            r = row - dx;
+            c = col - dy;
+            while (r >= 0 && r < 6 && c >= 0 && c < 7 && board[r][c] === player && positions.length < 4) {
+                positions.push([r, c]);
+                r -= dx;
+                c -= dy;
+            }
 
-          <div className={`${isTab ? 'w-full' : 'w-1/2'} flex justify-center`}>
-            <GameBoardComponent
-              board={board}
-              dropToken={dropToken}
-              winningPositions={winningPositions}
-            />
-          </div>
+            if (positions.length >= 4) {
+                return positions;
+            }
+        }
 
-          <div className={`${isTab ? 'w-full' : 'w-1/4'} min-w-[200px]`}>
-            <GameStatusComponent
-              currentPlayer={currentPlayer}
-              winner={winner}
-              resetGame={resetGame}
-            />
-          </div>
+        return false;
+    };
+
+    const resetGame = () => {
+        setBoard(Array(6).fill(null).map(() => Array(7).fill(0)));
+        setCurrentPlayer(1);
+        setGameOver(false);
+        setWinner(null);
+        setWinningPositions([]);
+    };
+
+    return (
+        <div className="min-h-screen flex flex-col items-center pt-10 overflow-hidden bg-gradient-to-br from-black via-blue-900 to-black relative">
+
+            {gameOver && winner && <Confetti width={width} height={height} numberOfPieces={500} />}
+
+            <div className="absolute inset-0 backdrop-blur-md bg-black/30 z-0"></div>
+
+            <div className="relative z-10 w-full flex flex-col items-center">
+                <h1
+                    className={`${headingSize} mb-10 text-white text-center drop-shadow-[0_3px_5px_rgba(0,0,0,0.5)]`}
+                    style={{ fontFamily: "'Luckiest Guy', cursive", letterSpacing: "0.2rem" }}
+                >
+                    🎯 Connect Four 🎲
+                </h1>
+
+                <div
+                    className={`w-full max-w-7xl gap-6 px-4 flex ${isTab ? 'flex-col items-center' : 'flex-row'}`}
+                >
+                    <div className={`${isTab ? 'w-full' : 'w-1/4'} min-w-[200px]`}>
+                        <InstructionsComponent />
+                    </div>
+
+                    <div className={`${isTab ? 'w-full' : 'w-1/2'} flex justify-center`}>
+                        <GameBoardComponent
+                            board={board}
+                            dropToken={dropToken}
+                            winningPositions={winningPositions}
+                        />
+                    </div>
+
+                    <div className={`${isTab ? 'w-full' : 'w-1/4'} min-w-[200px]`}>
+                        <GameStatusComponent
+                            currentPlayer={currentPlayer}
+                            winner={winner}
+                            resetGame={resetGame}
+                        />
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 }
