@@ -33,6 +33,7 @@ A modern, interactive implementation of the classic **Connect Four** game, built
 
 ### 1. Clone the repository
 git clone https://github.com/sehajini1/Connect-four.git
+
 cd connect-four-game
 
 ### 2. Install dependencies
