@@ -3,6 +3,7 @@ import InstructionsComponent from "./InstructionsComponent";
 import GameBoardComponent from "./GameBoardComponent";
 import GameStatusComponent from "./GameStatusComponent";
 import confetti from 'canvas-confetti';
+import { useMedia } from "react-use";
 
 export default function GamePage() {
   const [board, setBoard] = useState(() =>
@@ -12,6 +13,15 @@ export default function GamePage() {
   const [gameOver, setGameOver] = useState(false);
   const [winner, setWinner] = useState(null);
   const [winningPositions, setWinningPositions] = useState([]);
+
+  const isSmallMobile = useMedia("(max-width: 400px)");
+  const isTab = useMedia('(max-width: 950px)');
+
+  const headingSize = isSmallMobile
+        ? 'text-2xl'
+        : isTab
+        ? 'text-4xl'
+        : 'text-6xl';
 
   const confettiIntervalRef = useRef(null); 
 
@@ -121,18 +131,22 @@ export default function GamePage() {
 
       <div className="relative z-10 w-full flex flex-col items-center">
         <h1
-          className="text-6xl mb-10 text-white drop-shadow-[0_3px_5px_rgba(0,0,0,0.5)]"
-          style={{ fontFamily: "'Luckiest Guy', cursive", letterSpacing: "0.2rem" }}
-        >
-          🎯 Connect Four 🎲
-        </h1>
+        className={`${headingSize} mb-10 text-white text-center drop-shadow-[0_3px_5px_rgba(0,0,0,0.5)]`}
+        style={{ fontFamily: "'Luckiest Guy', cursive", letterSpacing: "0.2rem" }}
+      >
+        🎯 Connect Four 🎲
+      </h1>
 
-        <div className="flex flex-row w-full max-w-7xl gap-6 px-4">
-          <div className="w-1/4 min-w-[200px]">
-            <InstructionsComponent />
-          </div>
+        <div
+        className={`w-full max-w-7xl gap-6 px-4 flex ${
+          isTab  ? 'flex-col items-center' : 'flex-row'
+        }`}
+      >
+          <div className={`${isTab  ? 'w-full ' : 'w-1/4'} min-w-[200px]`}>
+          <InstructionsComponent />
+        </div>
 
-          <div className="w-1/2 flex justify-center">
+          <div className={`${isTab  ? 'w-full ' : 'w-1/2'} flex justify-center`}>
             <GameBoardComponent
               board={board}
               dropToken={dropToken}
@@ -140,7 +154,7 @@ export default function GamePage() {
             />
           </div>
 
-          <div className="w-1/4 min-w-[200px]">
+          <div className={`${isTab  ? 'w-full' : 'w-1/4'} min-w-[200px]`}>
             <GameStatusComponent
               currentPlayer={currentPlayer}
               winner={winner}

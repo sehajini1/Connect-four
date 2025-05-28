@@ -2,7 +2,7 @@ import React from "react";
 
 export default function InstructionComponent(){
     return(
-        <div className="p-6 rounded-2xl shadow-xl bg-white/10 backdrop-blur-lg border border-white/20 text-white w-full flex flex-col items-start space-y-3 max-w-xs">
+        <div className="p-6 rounded-2xl shadow-xl bg-white/10 backdrop-blur-lg border border-white/20 text-white w-full flex flex-col items-start ">
       <h3
         className="text-xl text-white font-bold drop-shadow"
         style={{ fontFamily: "'Chewy', cursive", letterSpacing: "0.1rem" }}

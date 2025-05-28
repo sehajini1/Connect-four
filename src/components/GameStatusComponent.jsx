@@ -1,6 +1,9 @@
 import React from "react";
+import { useMedia } from "react-use";
 
 export default function GameStatusComponent({ currentPlayer, winner, resetGame }) {
+  const isMobile = useMedia("(max-width: 300px)");
+
   return (
     <div className="p-6 rounded-2xl shadow-xl bg-white/10 backdrop-blur-lg border border-white/20 text-white w-full flex flex-col items-center space-y-6">
       {winner ? (
@@ -15,7 +18,7 @@ export default function GameStatusComponent({ currentPlayer, winner, resetGame }
       ) : (
         <>
           <h2
-            className="text-4xl text-white drop-shadow-md"
+            className={`${isMobile? 'text-2xl':'text-4xl'} text-white drop-shadow-md`}
             style={{ fontFamily: "'Chewy', cursive", letterSpacing: "0.2rem" }}
           >
             Current Turn
