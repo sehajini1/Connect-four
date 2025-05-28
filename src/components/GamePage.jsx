@@ -13,7 +13,7 @@ export default function GamePage() {
   const [winner, setWinner] = useState(null);
   const [winningPositions, setWinningPositions] = useState([]);
 
-  const confettiIntervalRef = useRef(null); // 🔁 To store the interval ID
+  const confettiIntervalRef = useRef(null); 
 
   const startConfetti = () => {
     const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 1000 };
@@ -61,7 +61,7 @@ export default function GamePage() {
       setWinner(currentPlayer);
       setWinningPositions(result);
       setGameOver(true);
-      startConfetti(); // 🎉 Start confetti loop
+      startConfetti(); 
     } else {
       setCurrentPlayer(currentPlayer === 1 ? 2 : 1);
     }
@@ -103,7 +103,7 @@ export default function GamePage() {
   };
 
   const resetGame = () => {
-    stopConfetti(); // 🛑 Stop confetti on reset
+    stopConfetti(); 
     setBoard(Array(6).fill(null).map(() => Array(7).fill(0)));
     setCurrentPlayer(1);
     setGameOver(false);
@@ -112,7 +112,6 @@ export default function GamePage() {
   };
 
   useEffect(() => {
-    // Clean up confetti on unmount
     return () => stopConfetti();
   }, []);
 
