@@ -100,7 +100,7 @@ export default function GamePage() {
   return (
     <div className="min-h-screen flex flex-col items-center pt-10 overflow-hidden bg-gradient-to-br from-black via-blue-900 to-black relative">
       
-      {gameOver && winner && <Confetti width={width} height={height} numberOfPieces={400} />}
+      {gameOver && winner && <Confetti width={width} height={height} numberOfPieces={500} />}
 
       <div className="absolute inset-0 backdrop-blur-md bg-black/30 z-0"></div>
 
