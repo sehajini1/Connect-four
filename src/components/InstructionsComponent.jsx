@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function InstructionComponent(){
+function Instructions(){
     return(
         <div className="p-6 rounded-2xl shadow-xl bg-white/10 backdrop-blur-lg border border-white/20 text-white w-full flex flex-col items-start ">
       <h3
@@ -17,3 +17,6 @@ export default function InstructionComponent(){
     </div>
     );
 }
+
+const InstructionComponent = React.memo(Instructions);
+export default InstructionComponent;

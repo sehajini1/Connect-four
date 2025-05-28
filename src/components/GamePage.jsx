@@ -38,11 +38,8 @@ export default function GamePage() {
 
     if (row === -1) return;
 
-    const newBoard = board.map((r, i) =>
-      r.map((cell, j) => (i === row && j === col ? currentPlayer : cell))
-    );
-
-    setBoard(newBoard);
+    board[row][col] =currentPlayer;
+    const newBoard = board;
 
     const result = checkWin(newBoard, row, col, currentPlayer);
     if (result) {
@@ -56,18 +53,19 @@ export default function GamePage() {
 
   const checkWin = (board, row, col, player) => {
     const directions = [
-      [0, 1],
-      [1, 0],
-      [1, 1],
-      [1, -1],
-    ];
+  [0, 1],   // →
+  [1, 0],   // ↓ 
+  [1, 1],   // ↘
+  [1, -1],  // ↙
+];
+
 
     for (let [dx, dy] of directions) {
       let positions = [[row, col]];
 
       let r = row + dx;
       let c = col + dy;
-      while (r >= 0 && r < 6 && c >= 0 && c < 7 && board[r][c] === player) {
+      while (r >= 0 && r < 6 && c >= 0 && c < 7 && board[r][c] === player && positions.length < 4) {
         positions.push([r, c]);
         r += dx;
         c += dy;
@@ -75,7 +73,7 @@ export default function GamePage() {
 
       r = row - dx;
       c = col - dy;
-      while (r >= 0 && r < 6 && c >= 0 && c < 7 && board[r][c] === player) {
+      while (r >= 0 && r < 6 && c >= 0 && c < 7 && board[r][c] === player && positions.length < 4) {
         positions.push([r, c]);
         r -= dx;
         c -= dy;
