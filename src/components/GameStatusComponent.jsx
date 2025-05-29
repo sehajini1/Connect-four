@@ -3,11 +3,19 @@ import { useMedia } from "react-use";
 
 function GameStatus({ currentPlayer, winner, resetGame }) {
   const isMobile = useMedia("(max-width: 300px)");
-  
+  console.log("winner",winner)
   return (
     <div className="p-6 rounded-2xl shadow-xl bg-white/10 backdrop-blur-lg border border-white/20 text-white w-full flex flex-col items-center space-y-6">
-      {winner ? (
-        <>
+      {winner != null ? (
+        winner === 0 ? (
+          <h2
+            className="text-4xl text-blue-300 drop-shadow-md"
+            style={{ fontFamily: "'Chewy', cursive", letterSpacing: "0.2rem" }}
+          >
+            🤝 Draw!
+          </h2>
+        ):(
+          <>
           <h2 className="text-4xl text-green-400 drop-shadow-md"
             style={{ fontFamily: "'Chewy', cursive", letterSpacing: "0.2rem" }}>🎉 Winner!</h2>
           <div
@@ -15,6 +23,7 @@ function GameStatus({ currentPlayer, winner, resetGame }) {
               }`}
           ></div>
         </>
+        )
       ) : (
         <>
           <h2
@@ -42,6 +51,8 @@ function GameStatus({ currentPlayer, winner, resetGame }) {
           </div>
         </>
       )}
+        
+        
 
       <button
         onClick={resetGame}
