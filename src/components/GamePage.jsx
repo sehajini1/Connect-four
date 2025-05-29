@@ -14,6 +14,7 @@ export default function GamePage() {
     const [gameOver, setGameOver] = useState(false);
     const [winner, setWinner] = useState(null);
     const [winningPositions, setWinningPositions] = useState([]);
+    const [countClick, setCountClick] = useState(1);
 
     const isSmallMobile = useMedia("(max-width: 400px)");
     const isTab = useMedia('(max-width: 950px)');
@@ -28,6 +29,8 @@ export default function GamePage() {
     const dropToken = (col) => {
         if (gameOver) return;
 
+        setCountClick(prev => prev + 1);
+console.log("my",countClick)
         let row = -1;
         for (let i = 5; i >= 0; i--) {
             if (board[i][col] === 0) {
@@ -37,18 +40,21 @@ export default function GamePage() {
         }
 
         if (row === -1) return;
+        
 
         const newBoard = [...board];
         newBoard[row] = [...newBoard[row]];
         newBoard[row][col] = currentPlayer;
         setBoard(newBoard);
 
-
         const result = checkWin(newBoard, row, col, currentPlayer);
         if (result) {
             setWinner(currentPlayer);
             setWinningPositions(result);
             setGameOver(true);
+        }else if (countClick === 42) {
+            setGameOver(true);
+            setWinner(0);
         } else {
             setCurrentPlayer(currentPlayer === 1 ? 2 : 1);
         }
@@ -92,6 +98,7 @@ export default function GamePage() {
 
     const resetGame = () => {
         setBoard(Array(6).fill(null).map(() => Array(7).fill(0)));
+        setCountClick(1);
         setCurrentPlayer(1);
         setGameOver(false);
         setWinner(null);
@@ -101,7 +108,7 @@ export default function GamePage() {
     return (
         <div className="min-h-screen flex flex-col items-center pt-10 overflow-hidden bg-gradient-to-br from-black via-blue-900 to-black relative">
 
-            {gameOver && winner && <Confetti width={width} height={height} numberOfPieces={500} />}
+            {gameOver && winner > 0 && <Confetti width={width} height={height} numberOfPieces={500} />}
 
             <div className="absolute inset-0 backdrop-blur-md bg-black/30 z-0"></div>
 
